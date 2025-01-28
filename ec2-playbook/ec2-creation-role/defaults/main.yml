@@ -1,2 +1,4 @@
 ---
 # defaults file for ec2-creation-role
+type: t2.micro
+region: ap-south-1
