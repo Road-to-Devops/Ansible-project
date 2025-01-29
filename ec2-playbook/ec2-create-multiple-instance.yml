@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  connection: local
+
+  tasks:
+  - name: Create EC2 instances
+    amazon.aws.ec2_instance:
+      name: "{{ item.name }}"
+      key_name: "ansible-server-key-value"
+      instance_type: t2.micro
+      security_group: default
+      region: ap-south-1
+      aws_access_key: "{{aws_access_key}}"  # From vault as defined
+      aws_secret_key: "{{aws_secret_key}}"  # From vault as defined      
+      network:
+        assign_public_ip: true
+      image_id: "{{ item.image }}"
+      tags:
+        environment: "{{ item.name }}"
+    loop:
+      - { image: "ami-05fa46471b02db0ce", name: "Linux Machine" } 
+      - { image: "ami-00bb6a80f01f03502", name: "ubuntu machine 1" }
+      - { image: "ami-00bb6a80f01f03502", name: "ubuntu machine 2" }
